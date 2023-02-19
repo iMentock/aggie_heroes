@@ -5,11 +5,13 @@ import {
   loginWithGoogle,
   registerWithEmailandPassword,
 } from "../../firebase"
-import { Link, useNavigate } from "react-router-dom"
-import { Container, Row, Form, Button, Col } from "react-bootstrap"
+import { useNavigate } from "react-router-dom"
+import { Container, Row, Form, Button, Col, Alert } from "react-bootstrap"
 
 function Register() {
-  const [user, loading, error] = useAuthState(auth)
+  const [user, loading] = useAuthState(auth)
+  const [error, setError] = useState(null)
+  const [show, setShow] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -27,13 +29,34 @@ function Register() {
       formDataObj.userPassword &&
       formDataObj.userName
     ) {
-      // After registration the user will automatically be pushed to dashboard
-      registerWithEmailandPassword(
-        formDataObj.userName,
-        formDataObj.userEmail,
-        formDataObj.userPassword
-      )
+      try {
+        // After registration the user will automatically be pushed to dashboard
+        registerWithEmailandPassword(
+          formDataObj.userName,
+          formDataObj.userEmail,
+          formDataObj.userPassword
+        )
+      } catch (e) {
+        setError(e)
+        handleError()
+      }
     }
+  }
+
+  const handleError = () => {
+    if (!error) {
+      return
+    }
+    let errorString = ""
+
+    if (error.message.includes("user-not-found")) {
+      errorString = "User Not Found"
+    }
+    if (error.message.includes("network-request-failed")) {
+      errorString = "Request Failed"
+    }
+
+    return errorString
   }
 
   return (
@@ -42,6 +65,37 @@ function Register() {
         <div className="centered_text">
           <h1>Register</h1>
         </div>
+      </Row>
+      <Row style={{ padding: "20px 0" }}>
+        <Col />
+        <Col xs={4}>
+          <Alert show={show} variant="danger">
+            <Alert.Heading>
+              {error ? `${handleError()}` : "Sorry!"}
+            </Alert.Heading>
+            <p></p>
+            <p>
+              It looks like Aggie Heroes has encountered an error. If you wish
+              to submit a question or comment please click{" "}
+              <a href="mailto: vamartinez@tamu.edu">here</a>.{" "}
+            </p>
+            <p>
+              We are actively working on fixing the issue. Please check back
+              again soon.
+            </p>
+            <p> Thank you! Gig'Em!</p>
+            <hr />
+            <div>
+              <Button
+                onClick={() => setShow(false)}
+                variant="outline-secondary"
+              >
+                Ok
+              </Button>
+            </div>
+          </Alert>
+        </Col>
+        <Col />
       </Row>
       <Row>
         <Col xs={4} />
@@ -87,7 +141,7 @@ function Register() {
         <Col xs={4} />
         <Col xs={4}>
           <Button onClick={loginWithGoogle} variant="danger">
-            <i class="fa-brands fa-google mx-2"></i>
+            <i className="fa-brands fa-google mx-2"></i>
             Google
           </Button>
         </Col>

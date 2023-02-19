@@ -98,55 +98,59 @@ function Find_Hero() {
     const snapshotData = await getAllAvailableTutoring()
     var holdingArray = []
     await snapshotData.forEach((entry) => {
-      // console.log(entry.data())
-      // let tempData = entry.data()
-      // holdingArray.push(tempData)
       if (entry.data().user !== user.uid) {
         let tempData = entry.data()
         holdingArray.push(tempData)
       }
     })
+    setIsLoading(false)
     return setRawAvailability(holdingArray)
   }
 
   return (
     <Container>
-      <Row className="centered_text">
-        <h1>Find A Hero</h1>
-      </Row>
-      {user ? (
-        isLoading ? (
-          <p>loading...</p>
-        ) : (
-          <BootstrapTable keyField="id" data={availability} columns={columns} />
-        )
-      ) : (
-        <div className="centered_text my-5">
-          <h5 className="red_text">Must be logged in to find a tutor</h5>
-          <p>
-            Please either <a href="/register">register</a> or{" "}
-            <a href="/login">sign in</a>
-          </p>
+      {!loading ? (
+        <div>
+          <Row className="centered_text">
+            <h1>Find A Hero</h1>
+          </Row>
+          {user ? (
+            <BootstrapTable
+              keyField="id"
+              data={availability}
+              columns={columns}
+            />
+          ) : (
+            <div className="centered_text my-5">
+              <h5 className="red_text">Must be logged in to find a tutor</h5>
+              <p>
+                Please either <a href="/register">register</a> or{" "}
+                <a href="/login">sign in</a>
+              </p>
+            </div>
+          )}
+          <Modal show={showModal}>
+            <Modal.Header>
+              <Modal.Title>Contact Tutor</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+              You are about to request a tutoring session with this user
+            </Modal.Body>
+
+            <Modal.Footer>
+              <Button variant="primary" onClick={() => makeCallToTutor()}>
+                Continue
+              </Button>
+              <Button variant="danger" onClick={() => setShowModal(false)}>
+                Cancel
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </div>
+      ) : (
+        <p>loading...</p>
       )}
-      <Modal show={showModal}>
-        <Modal.Header>
-          <Modal.Title>Contact Tutor</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          You are about to request a tutoring session with this user
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button variant="primary" onClick={() => makeCallToTutor()}>
-            Continue
-          </Button>
-          <Button variant="danger" onClick={() => setShowModal(false)}>
-            Cancel
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </Container>
   )
 }

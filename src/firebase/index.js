@@ -54,8 +54,7 @@ const loginWithGoogle = async () => {
       return result
     }
   } catch (err) {
-    console.error(err)
-    alert(err.message)
+    throw new Error(err)
   }
 }
 
@@ -63,8 +62,7 @@ const loginWithEmailandPassword = async (email, password) => {
   try {
     await signInWithEmailAndPassword(auth, email, password)
   } catch (err) {
-    console.error(err)
-    alert(err.message)
+    throw new Error(err)
   }
 }
 
@@ -80,8 +78,7 @@ const registerWithEmailandPassword = async (name, email, password) => {
       email,
     })
   } catch (err) {
-    console.error(err)
-    alert(err.message)
+    throw new Error(err)
   }
 }
 
@@ -89,12 +86,13 @@ const registerWithEmailandPassword = async (name, email, password) => {
 const sendPasswordReset = async (email) => {
   try {
     await sendPasswordResetEmail(auth, email)
-    alert("Password reset link sent!")
     return true
+    // alert("Password reset link sent!")
+    // return true
   } catch (err) {
-    console.error(err)
-    alert(err.message)
-    return false
+    // console.error(err)
+    // alert(err.message)
+    return err.message
   }
 }
 
@@ -184,14 +182,14 @@ const sendTutoringRequest = async (userID, rowInfo) => {
       evening: rowInfo.evening,
       confirmed: false,
     })
-    alert(
-      "Success! Contacted tutor, please allow 48 hours for a response in your dashboard"
-    )
-    return
+    // alert(
+    //   "Success! Contacted tutor, please allow 48 hours for a response in your dashboard"
+    // )
+    return true
   } catch (err) {
-    console.error(err)
-    alert(err.message)
-    return
+    // console.error(err)
+    // alert(err.message)
+    return err.message
   }
 }
 
@@ -215,10 +213,15 @@ const getUIDByUsername = async (userName) => {
 }
 
 const getEmailByUsername = async (userName) => {
-  let usersRef = collection(db, "users")
-  const q = query(usersRef, where("name", "==", userName))
+  let usersRef
+  let q
+  let querySnapshot
+  try {
+    usersRef = collection(db, "users")
+    q = query(usersRef, where("name", "==", userName))
 
-  const querySnapshot = await getDocs(q)
+    querySnapshot = await getDocs(q)
+  } catch (e) {}
 
   return querySnapshot.docs[0].data().email
 }
@@ -250,14 +253,10 @@ const confirmTutoringRequest = async (requestData) => {
 
       let updateRef = doc(db, "tutor_requests", docID)
       await updateDoc(updateRef, holding)
-
-      alert("Success")
     }
     return
   } catch (err) {
-    console.error(err)
-    alert(err.message)
-    return
+    return err.message
   }
 }
 
@@ -288,14 +287,10 @@ const denyTutoringRequest = async (requestData, userID) => {
 
       let updateRef = doc(db, "tutor_requests", docID)
       await updateDoc(updateRef, holding)
-
-      alert("Success")
     }
     return
   } catch (err) {
-    console.error(err)
-    alert(err.message)
-    return
+    return err.message
   }
 }
 

@@ -20,8 +20,7 @@ function ForgotPassword() {
         if (result) navigate("/", { replace: true })
       }
     } catch (err) {
-      console.error(err)
-      alert(err.message)
+      return err.message
     }
   }
 

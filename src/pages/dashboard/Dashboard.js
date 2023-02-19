@@ -20,6 +20,7 @@ import {
   getEmailByUsername,
 } from "../../firebase"
 import { useAuthState } from "react-firebase-hooks/auth"
+import Error_handler from "../../helper/Error_handler"
 
 function Dashboard() {
   const [entries, setEntries] = useState([])
@@ -52,7 +53,6 @@ function Dashboard() {
   const handleRemove = async (userID, subject) => {
     setIsLoading(true)
     await removeTutorSpot(userID, subject)
-    alert("Succesfully deleted")
     setIsLoading(false)
     fetchUsersTutoring()
   }
@@ -68,9 +68,7 @@ function Dashboard() {
       await fetchUsersRequests()
       return
     } catch (err) {
-      console.error(err)
-      alert(err.message)
-      return
+      return <>{Error_handler()}</>
     }
   }
 
@@ -105,9 +103,9 @@ function Dashboard() {
       await fetchOutgoingRequests()
       return
     } catch (err) {
-      console.error(err)
-      alert(err.message)
-      return
+      // console.error(err)
+      // alert(err.message)
+      return <>{Error_handler()}</>
     }
   }
 
@@ -140,9 +138,9 @@ function Dashboard() {
       setOutgoingRequests(secondHoldingArray)
       return
     } catch (err) {
-      console.error(err)
-      alert(err.message)
-      return
+      // console.error(err)
+      // alert(err.message)
+      return <>{Error_handler()}</>
     }
   }
 
@@ -156,26 +154,26 @@ function Dashboard() {
       fetchUsersRequests()
       return
     } catch (err) {
-      console.error(err)
-      alert(err.message)
-      return
+      // console.error(err)
+      // alert(err.message)
+      return <>{Error_handler()}</>
     }
   }
 
   const handleDeny = async (requestData) => {
     try {
-      const tutoringNotAvailable = await denyTutoringRequest(
-        requestData,
-        user.uid
-      )
+      const _ = await denyTutoringRequest(requestData, user.uid)
 
       fetchUsersRequests()
       return
     } catch (err) {
-      console.error(err)
-      alert(err.message)
-      return
+      console.error("Should see error")
+      return showError()
     }
+  }
+
+  const showError = () => {
+    return Error_handler()
   }
 
   const tutoringCards = entries.map((entry) => {
@@ -190,25 +188,25 @@ function Dashboard() {
               <ul>
                 <li key={entry.subject}>
                   {entry.morning ? (
-                    <i class="fa-regular fa-clock" />
+                    <i className="fa-regular fa-clock green" />
                   ) : (
-                    <i class="fa-solid fa-x"></i>
+                    <i className="fa-solid fa-x red"></i>
                   )}{" "}
                   morning
                 </li>
                 <li key={entry.subject}>
                   {entry.afternoon ? (
-                    <i class="fa-regular fa-clock" />
+                    <i className="fa-regular fa-clock green" />
                   ) : (
-                    <i class="fa-solid fa-x"></i>
+                    <i className="fa-solid fa-x red"></i>
                   )}{" "}
                   afternoon
                 </li>
                 <li key={entry.subject}>
                   {entry.evening ? (
-                    <i class="fa-regular fa-clock" />
+                    <i className="fa-regular fa-clock green" />
                   ) : (
-                    <i class="fa-solid fa-x"></i>
+                    <i className="fa-solid fa-x red"></i>
                   )}{" "}
                   evening
                 </li>
@@ -246,41 +244,49 @@ function Dashboard() {
         <Card key={request.id}>
           <Card.Body>
             <Card.Title>{request.subject}</Card.Title>
-            <Card.Subtitle>From User: {request.fromUser}</Card.Subtitle>
+            <Card.Subtitle>
+              From User: <em>{request.fromUser}</em>
+            </Card.Subtitle>
 
             <Card.Text>
               <ul>
                 <li key={request.subject}>
                   {request.morning ? (
-                    <i class="fa-regular fa-clock" />
+                    <i className="fa-regular fa-clock green" />
                   ) : (
-                    <i class="fa-solid fa-x"></i>
+                    <i className="fa-solid fa-x red"></i>
                   )}{" "}
                   morning
                 </li>
                 <li key={request.subject}>
                   {request.afternoon ? (
-                    <i class="fa-regular fa-clock" />
+                    <i className="fa-regular fa-clock green" />
                   ) : (
-                    <i class="fa-solid fa-x"></i>
+                    <i className="fa-solid fa-x red"></i>
                   )}{" "}
                   afternoon
                 </li>
                 <li key={request.subject}>
                   {request.evening ? (
-                    <i class="fa-regular fa-clock" />
+                    <i className="fa-regular fa-clock green" />
                   ) : (
-                    <i class="fa-solid fa-x"></i>
+                    <i className="fa-solid fa-x red"></i>
                   )}{" "}
                   evening
                 </li>
               </ul>
               <p>
-                Confirmed:{" "}
+                Status:{" "}
                 {request.confirmed ? (
-                  <i class="fa-regular fa-circle-check"></i>
+                  <>
+                    <i className="fa-regular fa-circle-check green"></i>
+                    <span> Confirmed</span>
+                  </>
                 ) : (
-                  <i class="fa-solid fa-xmark"></i>
+                  <>
+                    <i className="fa-solid fa-xmark red red"></i>
+                    <span> Denied</span>
+                  </>
                 )}
               </p>
               {isLoading ? (
@@ -323,39 +329,39 @@ function Dashboard() {
           <Card.Body>
             <Card.Title>{request.subject}</Card.Title>
             <Card.Subtitle>User: {request.forUser}</Card.Subtitle>
-
+            <em>Availability:</em>
             <Card.Text>
               <ul>
                 <li key={request.subject}>
                   {request.morning ? (
-                    <i class="fa-regular fa-clock" />
+                    <i className="fa-regular fa-circle-check green"></i>
                   ) : (
-                    <i class="fa-solid fa-x"></i>
+                    <i className="fa-solid fa-x red"></i>
                   )}{" "}
                   morning
                 </li>
                 <li key={request.subject}>
                   {request.afternoon ? (
-                    <i class="fa-regular fa-clock" />
+                    <i className="fa-regular fa-circle-check green"></i>
                   ) : (
-                    <i class="fa-solid fa-x"></i>
+                    <i className="fa-solid fa-x red"></i>
                   )}{" "}
                   afternoon
                 </li>
                 <li key={request.subject}>
                   {request.evening ? (
-                    <i class="fa-regular fa-clock" />
+                    <i className="fa-regular fa-circle-check green"></i>
                   ) : (
-                    <i class="fa-solid fa-x"></i>
+                    <i className="fa-solid fa-x red"></i>
                   )}{" "}
                   evening
                 </li>
               </ul>
               <p>
-                Confirmed:{" "}
                 {request.confirmed ? (
                   <>
-                    <i class="fa-regular fa-circle-check"></i>
+                    <i className="fa-regular fa-circle-check green"></i>{" "}
+                    <span> Confirmed by tutor</span>
                     <hr />
                     <Button
                       onClick={(e) => {
@@ -368,7 +374,10 @@ function Dashboard() {
                     </Button>
                   </>
                 ) : (
-                  <i class="fa-solid fa-xmark"></i>
+                  <>
+                    <i className="fa-solid fa-xmark red red"></i>
+                    <span> Denied by tutor</span>
+                  </>
                 )}
               </p>
             </Card.Text>
@@ -379,49 +388,73 @@ function Dashboard() {
   })
 
   return (
-    <Container className="my-5">
+    <Container className="my-5 dashboard">
       <Row className="centered_text mb-5">
         <h1>Dashboard</h1>
       </Row>
-      <Row>
-        <h2>Tutoring</h2>
-        {entries.length > 0 ? <>{tutoringCards}</> : <p>no openings</p>}
-      </Row>
-      <hr />
-      <Row>
-        <h2>Requests For Tutoring</h2>
-        {yourRequests.length > 0 ? <>{requestCards}</> : <p>no requests yet</p>}
-      </Row>
-      <hr />
-      <Row>
-        <h2>Requests Sent</h2>
-        {outGoingRequests.length > 0 ? (
-          <>{outgoingRequestCards}</>
-        ) : (
-          <p>no requests yet</p>
-        )}
-      </Row>
-      <Modal show={show}>
-        <Modal.Header>
-          <Modal.Title>Contact Tutor</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>
-            Contact the tutor at <span className="fw-bold">{tutorEmail}</span>
-          </p>
-          <p>
-            note: we are currently working on in app messaging. For now please
-            set up meetings via email or phone if you chose. We always advise
-            using caution when meeting. Use your best judgement, and adhere to
-            the Aggie code of conduct. We appreciate our community, Gig'em!
-          </p>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShow(false)}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      {!loading ? (
+        <>
+          {!user ? (
+            <div className="centered_text my-5">
+              <h5 className="red_text">Must be logged in to find a tutor</h5>
+              <p>
+                Please either <a href="/register">register</a> or{" "}
+                <a href="/login">sign in</a>
+              </p>
+            </div>
+          ) : (
+            <>
+              <Row>
+                <h2>Tutoring</h2>
+                {entries.length > 0 ? <>{tutoringCards}</> : <p>no openings</p>}
+              </Row>
+              <hr />
+              <Row>
+                <h2>Requests For Tutoring</h2>
+                {yourRequests.length > 0 ? (
+                  <>{requestCards}</>
+                ) : (
+                  <p>no requests yet</p>
+                )}
+              </Row>
+              <hr />
+              <Row>
+                <h2>Requests Sent</h2>
+                {outGoingRequests.length > 0 ? (
+                  <>{outgoingRequestCards}</>
+                ) : (
+                  <p>no requests yet</p>
+                )}
+              </Row>
+              <Modal show={show}>
+                <Modal.Header>
+                  <Modal.Title>Contact Tutor</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <p>
+                    Contact the tutor at{" "}
+                    <span className="fw-bold">{tutorEmail}</span>
+                  </p>
+                  <p>
+                    note: we are currently working on in app messaging. For now
+                    please set up meetings via email or phone if you chose. We
+                    always advise using caution when meeting. Use your best
+                    judgement, and adhere to the Aggie code of conduct. We
+                    appreciate our community, Gig'em!
+                  </p>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={() => setShow(false)}>
+                    Close
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            </>
+          )}
+        </>
+      ) : (
+        <p>loading...</p>
+      )}
     </Container>
   )
 }

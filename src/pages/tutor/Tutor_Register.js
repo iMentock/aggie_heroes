@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Container, Row, Col, Button, Form } from "react-bootstrap"
+import { Container, Row, Col, Button, Form, Alert } from "react-bootstrap"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth, registerTutor } from "../../firebase"
 import { useNavigate } from "react-router-dom"
@@ -22,7 +22,10 @@ function Tutor_Register() {
     "Physiology",
   ]
   const meetTimes = ["Morning", "Afternoon", "Evening"]
-  const [user, loading, error] = useAuthState(auth)
+  const [user, loading] = useAuthState(auth)
+  const [show, setShow] = useState(false)
+  const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(null)
   const [buttonDisable, setButtonDisable] = useState(false)
 
   const handleSubmit = async (e) => {
@@ -40,16 +43,19 @@ function Tutor_Register() {
           formDataObj.Evening === "on" ? true : false,
           formDataObj.Morning === "on" ? true : false
         )
-        alert("Success")
         navigate("/dashboard", { replace: true })
         return true
       }
     } catch (err) {
       setButtonDisable(false)
-      console.error(err)
       alert(err.message)
       return false
     }
+  }
+
+  const handleSuccess = () => {
+    setShow(true)
+    setSuccess(true)
   }
 
   subjects.sort()
@@ -73,57 +79,117 @@ function Tutor_Register() {
     )
   })
 
+  const handleError = () => {
+    if (!error) {
+      return
+    }
+    let errorString = ""
+
+    if (error.message.includes("user-not-found")) {
+      errorString = "User Not Found"
+    }
+    if (error.message.includes("network-request-failed")) {
+      errorString = "Request Failed"
+    }
+
+    return errorString
+  }
+
   return (
     <Container className="my-5">
-      <Row className="centered_text">
-        <h1>Become a Hero</h1>
-      </Row>
-      {user ? (
+      {!loading ? (
         <>
           <Row className="centered_text">
-            <Col xs={4} />
+            <h1>Become a Hero</h1>
+          </Row>
+          <Row style={{ padding: "20px 0" }}>
+            <Col />
             <Col xs={4}>
-              <p>
-                We match tutors with students looking for help by subject.
-                Please enter subjects you offer tutoring in.
-              </p>
-            </Col>
-            <Col xs={4} />
-          </Row>
-          <Row>
-            <>
-              <Col xs={4} />
-              <Col xs={4}>
-                <Form onSubmit={handleSubmit}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Subject</Form.Label>
-                    <Form.Select name="userSubject" aria-label="Default select">
-                      <option>Select Tutoring Subject</option>
-                      {subjectsList}
-                    </Form.Select>
-                  </Form.Group>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Preferred Meeting Time:</Form.Label>
-                    {meetTimesList}
-                  </Form.Group>
-
-                  <Button disabled={isDisabled} variant="primary" type="submit">
-                    Submit
+              <Alert show={show} variant="danger">
+                <Alert.Heading>
+                  {error ? `${handleError()}` : "Sorry!"}
+                </Alert.Heading>
+                <p></p>
+                <p>
+                  It looks like Aggie Heroes has encountered an error. If you
+                  wish to submit a question or comment please click{" "}
+                  <a href="mailto: vamartinez@tamu.edu">here</a>.{" "}
+                </p>
+                <p>
+                  We are actively working on fixing the issue. Please check back
+                  again soon.
+                </p>
+                <p> Thank you! Gig'Em!</p>
+                <hr />
+                <div>
+                  <Button
+                    onClick={() => setShow(false)}
+                    variant="outline-secondary"
+                  >
+                    Ok
                   </Button>
-                </Form>
-              </Col>
-              <Col xs={4} />
-            </>
+                </div>
+              </Alert>
+            </Col>
+            <Col />
           </Row>
+          {user ? (
+            <>
+              <Row className="centered_text">
+                <Col xs={4} />
+                <Col xs={4}>
+                  <p>
+                    We match tutors with students looking for help by subject.
+                    Please enter subjects you offer tutoring in.
+                  </p>
+                </Col>
+                <Col xs={4} />
+              </Row>
+              <Row>
+                <>
+                  <Col xs={4} />
+                  <Col xs={4}>
+                    <Form onSubmit={handleSubmit}>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Subject</Form.Label>
+                        <Form.Select
+                          name="userSubject"
+                          aria-label="Default select"
+                        >
+                          <option>Select Tutoring Subject</option>
+                          {subjectsList}
+                        </Form.Select>
+                      </Form.Group>
+                      <Form.Group className="mb-3">
+                        <Form.Label>Preferred Meeting Time:</Form.Label>
+                        {meetTimesList}
+                      </Form.Group>
+
+                      <Button
+                        disabled={isDisabled}
+                        variant="primary"
+                        type="submit"
+                      >
+                        Submit
+                      </Button>
+                    </Form>
+                  </Col>
+                  <Col xs={4} />
+                </>
+              </Row>
+            </>
+          ) : (
+            <div className="centered_text my-5">
+              <h5 className="red_text">Must be logged in to become a tutor</h5>
+              <p>
+                Please either <a href="/register">register</a> or{" "}
+                <a href="/login">sign in</a>
+              </p>
+            </div>
+          )}
         </>
       ) : (
-        <div className="centered_text my-5">
-          <h5 className="red_text">Must be logged in to become a tutor</h5>
-          <p>
-            Please either <a href="/register">register</a> or{" "}
-            <a href="/login">sign in</a>
-          </p>
-        </div>
+        <p>loading...</p>
       )}
     </Container>
   )

@@ -166,6 +166,9 @@ ul {
   background-position: center;
   background-color: #cccccc;
   background-size: cover;
+  min-height: 100%;
+  background-size: cover;
+  box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.3);
 }
 
 .maroon_background {

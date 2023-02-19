@@ -9,24 +9,11 @@ function team_caro() {
           <Image
             className="rounded_corners"
             src={virgil}
-            alt="team member image"
+            alt="An image of the Aggie Hero team member Virgil Martinez"
             fluid={true}
           />
           <Carousel.Caption>
-            <h3>Virgil</h3>
-            <p>team member description</p>
-          </Carousel.Caption>
-        </Carousel.Item>
-        <Carousel.Item>
-          <Image
-            className="rounded_corners"
-            src={virgil}
-            alt="team member image"
-            fluid={true}
-          />
-          <Carousel.Caption>
-            <h3>Virgil</h3>
-            <p>team member description</p>
+            <h2 id="hero_main_text">Virgil</h2>
           </Carousel.Caption>
         </Carousel.Item>
       </Carousel>

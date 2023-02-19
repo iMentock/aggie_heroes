@@ -7,7 +7,7 @@ export default function About_Hero() {
       <Row className="centered_text">
         <Col xs={4} />
         <Col xs={4}>
-          <Image src={logo} width="150px" />
+          <Image alt="Marroon Aggie Heroes logo" src={logo} width="150px" />
         </Col>
         <Col xs={4} />
       </Row>

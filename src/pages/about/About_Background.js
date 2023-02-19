@@ -12,6 +12,7 @@ export default function About_Background() {
               roundedCircle={true}
               fluid={true}
               className="image_white_border"
+              alt="Marroon Aggie Heroes logo"
             />
           </Col>
           <Col xs={12} sm={8} className="white_text">

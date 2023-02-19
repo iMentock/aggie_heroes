@@ -7,7 +7,7 @@ export default function Footer() {
       <Container>
         <Row style={{ paddingTop: "20px" }}>
           <Col>
-            <ul>
+            <ul className="contrast_link">
               <li>
                 <a href="#">Contact Us</a>
               </li>
@@ -23,7 +23,7 @@ export default function Footer() {
             </ul>
           </Col>
           <Col className="centered_text">
-            <Image src={logo} width="100px" />
+            <Image src={logo} width="100px" alt="Aggie Heroes logo in maroon" />
           </Col>
           <Col>
             <ul>

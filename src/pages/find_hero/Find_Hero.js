@@ -37,7 +37,7 @@ function Find_Hero() {
               e.preventDefault()
               setRowInfo(row)
               setShowModal(true)
-              console.log("Contact clicked on row -> ", row)
+              // console.log("Contact clicked on row -> ", row)
               makeCallToTutor()
             }}
           >
@@ -98,7 +98,7 @@ function Find_Hero() {
     const snapshotData = await getAllAvailableTutoring()
     var holdingArray = []
     await snapshotData.forEach((entry) => {
-      console.log(entry.data())
+      // console.log(entry.data())
       // let tempData = entry.data()
       // holdingArray.push(tempData)
       if (entry.data().user !== user.uid) {

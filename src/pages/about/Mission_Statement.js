@@ -9,8 +9,9 @@ export default function Mission_Statement() {
         </Row>
         <Row>
           <p>
-            Our team seeks to emphasize selfless service and leadership among
-            Aggies to improve academic achievements.
+            To inspire and empower the Aggie community through fostering a
+            culture of selfless service and strong leadership, leading to
+            academic excellence and personal growth for all.
           </p>
         </Row>
       </Container>

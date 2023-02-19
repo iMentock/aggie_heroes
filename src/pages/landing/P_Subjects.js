@@ -29,7 +29,10 @@ export default function P_Subjects() {
         <Row xs={2} md={4} className="g-4">
           {Object.keys(subjects).map((key, index) => (
             <Card className="p_subject_card">
-              <Card.Img src={subjects[key]} alt="subject image" />
+              <Card.Img
+                src={subjects[key]}
+                alt={`An image representing the subject ${key}.`}
+              />
               <Card.ImgOverlay>
                 <div id="p_subject_card_title">
                   <h2>{key}</h2>

@@ -10,7 +10,11 @@ export default function TryUs() {
         </Row>
         <Row xs={1} sm={2}>
           <Col xs={12} sm={4} className="try_us_left">
-            <Image src={img} className="try_us_image" />
+            <Image
+              src={img}
+              className="try_us_image"
+              alt="An image centered on 9 small tiles forming a square spelling yes you can."
+            />
           </Col>
           <Col xs={12} sm={8} className="try_us_right">
             <Card id="try_us_card" className="text-center">

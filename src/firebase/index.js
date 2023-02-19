@@ -1,4 +1,3 @@
-import { queryAllByDisplayValue } from "@testing-library/react"
 import { initializeApp } from "firebase/app"
 import {
   GoogleAuthProvider,
@@ -11,14 +10,12 @@ import {
 } from "firebase/auth"
 import {
   doc,
-  setDoc,
   getFirestore,
   query,
   getDocs,
   collection,
   where,
   addDoc,
-  getDoc,
   deleteDoc,
   updateDoc,
 } from "firebase/firestore"

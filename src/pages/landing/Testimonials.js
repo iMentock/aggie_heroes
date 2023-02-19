@@ -21,13 +21,14 @@ function Testimonials() {
               of them!"
             </p>
 
-            <h5>- Cody Tatum</h5>
+            <em>- Cody Tatum</em>
           </Col>
           <Col xs={{ order: 1, span: 6 }} md={{ order: 2, span: 4 }}>
             <Image
               src={smile_guy}
               className="test_pic image_white_border"
               roundedCircle={true}
+              alt="A picture of a man smiling"
               fluid
             />
           </Col>

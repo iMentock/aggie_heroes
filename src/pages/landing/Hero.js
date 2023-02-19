@@ -16,8 +16,8 @@ function HeroSearch() {
           <Form.Control
             type="text"
             id="searchValue"
-            aria-describedby="hero search"
             placeholder="subject or name"
+            aria-labelledby="searchValue"
           />
         </Col>
         <Col xs={2}>
@@ -41,7 +41,7 @@ export default function Hero() {
             <div>
               <h1 id="hero_main_text">Aggie HeroSearch</h1>
               <hr />
-              <h3 id="hero_sub_text">"Bringing Good Bull to Your GPA"</h3>
+              <h2 id="hero_main_text">"Bringing Good Bull to Your GPA"</h2>
               <Card bg="light" text="dark">
                 <Card.Body>
                   <Card.Title>Find your hero now</Card.Title>
@@ -55,7 +55,12 @@ export default function Hero() {
             md={{ span: 6, order: 2 }}
             className="d-flex align-items-center"
           >
-            <Image roundedCircle={true} src={ah_logo} style={logo_style} />
+            <Image
+              roundedCircle={true}
+              src={ah_logo}
+              style={logo_style}
+              alt={"Aggie Hero Logo"}
+            />
           </Col>
         </Row>
       </Container>

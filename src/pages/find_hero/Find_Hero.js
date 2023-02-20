@@ -37,7 +37,6 @@ function Find_Hero() {
               e.preventDefault()
               setRowInfo(row)
               setShowModal(true)
-              // console.log("Contact clicked on row -> ", row)
               makeCallToTutor()
             }}
           >
@@ -79,9 +78,21 @@ function Find_Hero() {
       const userName = await getUserNameByUID(entry.user)
 
       let temp = {
-        morning: entry.morning,
-        afternoon: entry.afternoon,
-        evening: entry.evening,
+        morning: entry.morning ? (
+          <i className="fa-regular fa-circle-check green"></i>
+        ) : (
+          <i className="fa-solid fa-x red"></i>
+        ),
+        afternoon: entry.afternoon ? (
+          <i className="fa-regular fa-circle-check green"></i>
+        ) : (
+          <i className="fa-solid fa-x red"></i>
+        ),
+        evening: entry.evening ? (
+          <i className="fa-regular fa-circle-check green"></i>
+        ) : (
+          <i className="fa-solid fa-x red"></i>
+        ),
         uid: entry.user,
         user: userName,
         subject: entry.subject,

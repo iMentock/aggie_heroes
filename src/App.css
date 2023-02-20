@@ -62,6 +62,10 @@ ul {
   border-bottom: 4px solid \9;
   content: "";
 }
+
+.disable-links {
+  pointer-events: none;
+}
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!~~~~ */
 
 /* ~~~~~~~~~~~~~~~~~~~HERO~~~~~~~~~~~~~~~~~~~~~~~ */

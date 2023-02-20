@@ -9,17 +9,25 @@ export default function Footer() {
           <Col>
             <ul className="contrast_link">
               <li>
-                <a href="#">Contact Us</a>
-              </li>
-              <li>
-                <a href="#">For Tutors</a>
-              </li>
-              <li>
                 <a href="/about">About</a>
               </li>
-              <li>
-                <a href="#">Get Help</a>
-              </li>
+              <span>
+                <li>
+                  <a className="disable-links" href="#" disabled tabindex="-1">
+                    Contact Us - (coming soon)
+                  </a>
+                </li>
+                <li>
+                  <a className="disable-links" href="#" disabled tabindex="-1">
+                    For Tutors - (coming soon)
+                  </a>
+                </li>
+                <li>
+                  <a className="disable-links" href="#" disabled tabindex="-1">
+                    Get Help - (coming soon)
+                  </a>
+                </li>
+              </span>
             </ul>
           </Col>
           <Col className="centered_text">
